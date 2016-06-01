@@ -1,4 +1,4 @@
-package io.vextil.launcher
+package io.vextil.launcher.Activities
 
 import android.app.Activity
 import android.app.LoaderManager.LoaderCallbacks
@@ -7,24 +7,26 @@ import android.content.Loader
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
+import io.vextil.launcher.*
+import io.vextil.launcher.Models.AppModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlin.properties.Delegates
 
-class HomeActivity() : Activity(), LoaderCallbacks<List<AppDetail>> {
+class HomeActivity() : Activity(), LoaderCallbacks<List<AppModel>> {
 
     var adapter = AppsAdapter(this)
     var loader: AppsLoader by Delegates.notNull()
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppDetail>> {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppModel>> {
         loader = AppsLoader(this)
         return loader
     }
 
-    override fun onLoadFinished(loader: Loader<List<AppDetail>>, data: List<AppDetail>) {
-        (recycler.adapter as AppsAdapter).swapData(data)
+    override fun onLoadFinished(loader: Loader<List<AppModel>>, data: List<AppModel>) {
+        adapter.swapData(data)
     }
 
-    override fun onLoaderReset(loader: Loader<List<AppDetail>>?) {
+    override fun onLoaderReset(loader: Loader<List<AppModel>>?) {
         throw UnsupportedOperationException()
     }
 

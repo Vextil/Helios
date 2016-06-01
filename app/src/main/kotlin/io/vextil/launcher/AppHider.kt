@@ -7,7 +7,7 @@ class AppHider(context: Context) {
     val prefs = context.getSharedPreferences("hidden_apps", Context.MODE_PRIVATE)
 
     fun isHidden(pack: String) : Boolean {
-        return prefs.contains(pack)
+        return prefs.contains(pack) || pack == "io.vextil.launcher"
     }
 
     fun add(pack: String) {

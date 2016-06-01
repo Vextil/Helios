@@ -11,7 +11,7 @@
         android:stateNotNeeded="true">
 
         <activity
-            android:name="io.vextil.launcher.HomeActivity"
+            android:name=".Activities.HomeActivity"
             android:label="Launcher Home"
             android:launchMode="singleTask"
             android:excludeFromRecents="true"

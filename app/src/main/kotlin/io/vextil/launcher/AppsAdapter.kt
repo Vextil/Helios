@@ -6,12 +6,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.vextil.launcher.Models.AppModel
 import kotlinx.android.synthetic.main.app_grid_item.view.*
 import kotlin.properties.Delegates
 
 class AppsAdapter(val context: Context) : RecyclerView.Adapter<AppsAdapter.ViewHolder>() {
 
-    var apps = listOf<AppDetail>()
+    var apps = listOf<AppModel>()
     var itemClick: (ComponentName) -> Unit by Delegates.notNull()
     var itemLongClick: (ComponentName) -> Unit by Delegates.notNull()
 
@@ -24,7 +25,7 @@ class AppsAdapter(val context: Context) : RecyclerView.Adapter<AppsAdapter.ViewH
 
     override fun getItemCount() = apps.size
 
-    fun swapData(data: List<AppDetail>) {
+    fun swapData(data: List<AppModel>) {
         apps = data
         notifyDataSetChanged()
     }
@@ -37,12 +38,12 @@ class AppsAdapter(val context: Context) : RecyclerView.Adapter<AppsAdapter.ViewH
         this.itemLongClick = itemLongClick
     }
 
-    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bindData(app : AppDetail) {
-            itemView.item_app_icon.setImageDrawable(app.icon)
+    inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+        fun bindData(app : AppModel) {
+            view.item_app_icon.setImageDrawable(app.icon)
             val component = ComponentName(app.pack, app.activity)
-            itemView.setOnClickListener { itemClick(component) }
-            itemView.setOnLongClickListener { itemLongClick(component);true }
+            view.setOnClickListener { itemClick(component) }
+            view.setOnLongClickListener { itemLongClick(component);true }
         }
     }
 

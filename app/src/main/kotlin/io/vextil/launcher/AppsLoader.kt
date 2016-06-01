@@ -4,29 +4,31 @@ import android.content.AsyncTaskLoader
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ResolveInfo
+import io.vextil.launcher.Models.AppModel
 
-class AppsLoader(context: Context) : AsyncTaskLoader<List<AppDetail>>(context) {
+class AppsLoader(context: Context) : AsyncTaskLoader<List<AppModel>>(context) {
 
-    var apps: List<AppDetail> = listOf()
+    var apps: List<AppModel> = listOf()
     val packageManager = context.packageManager
     val appChangesObserver = AppChangesReceiver(this)
     val appHider = AppHider(context)
 
-    override fun loadInBackground(): List<AppDetail> {
-        val apps = mutableListOf<AppDetail>()
-        val i = Intent(Intent.ACTION_MAIN, null)
-        i.addCategory(Intent.CATEGORY_LAUNCHER)
+    override fun loadInBackground(): List<AppModel> {
+        val apps = mutableListOf<AppModel>()
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
 
-        val launchables = packageManager.queryIntentActivities(i, 0)
+        val launchables = packageManager.queryIntentActivities(intent, 0)
 
         for (r: ResolveInfo in launchables) {
-            val pack = r.activityInfo.applicationInfo.packageName
-            if (!appHider.isHidden(pack)) {
-                val app = AppDetail()
-                app.name = r.loadLabel(packageManager).toString()
-                app.pack = pack
-                app.activity = r.activityInfo.name
-                app.icon = r.activityInfo.loadIcon(packageManager)
+            val packageName = r.activityInfo.applicationInfo.packageName
+            if (!appHider.isHidden(packageName)) {
+                val app = AppModel(
+                    name = r.loadLabel(packageManager).toString(),
+                    pack = packageName,
+                    activity = r.activityInfo.name,
+                    icon = r.activityInfo.loadIcon(packageManager)
+                )
                 apps.add(app)
             }
         }
@@ -34,7 +36,7 @@ class AppsLoader(context: Context) : AsyncTaskLoader<List<AppDetail>>(context) {
         return apps
     }
 
-    override fun deliverResult(apps: List<AppDetail>) {
+    override fun deliverResult(apps: List<AppModel>) {
         if (isStarted) super.deliverResult(apps)
         this.apps = apps
     }
