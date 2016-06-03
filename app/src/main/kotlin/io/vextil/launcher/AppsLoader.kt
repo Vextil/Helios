@@ -3,7 +3,6 @@ package io.vextil.launcher
 import android.content.AsyncTaskLoader
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ResolveInfo
 import io.vextil.launcher.Models.AppModel
 
 class AppsLoader(context: Context) : AsyncTaskLoader<List<AppModel>>(context) {
@@ -20,14 +19,14 @@ class AppsLoader(context: Context) : AsyncTaskLoader<List<AppModel>>(context) {
 
         val launchables = packageManager.queryIntentActivities(intent, 0)
 
-        for (r: ResolveInfo in launchables) {
-            val packageName = r.activityInfo.applicationInfo.packageName
+        launchables.forEach {
+            val packageName = it.activityInfo.applicationInfo.packageName
             if (!appHider.isHidden(packageName)) {
                 val app = AppModel(
-                    name = r.loadLabel(packageManager).toString(),
+                    name = it.loadLabel(packageManager).toString(),
                     pack = packageName,
-                    activity = r.activityInfo.name,
-                    icon = r.activityInfo.loadIcon(packageManager)
+                    activity = it.activityInfo.name,
+                    icon = it.activityInfo.loadIcon(packageManager)
                 )
                 apps.add(app)
             }
