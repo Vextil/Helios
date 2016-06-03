@@ -8,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import io.vextil.launcher.Models.AppModel
 import kotlinx.android.synthetic.main.app_grid_item.view.*
-import kotlin.properties.Delegates
 
 class AppsAdapter(val context: Context) : RecyclerView.Adapter<AppsAdapter.ViewHolder>() {
 
     var apps = listOf<AppModel>()
-    var itemClick: (ComponentName) -> Unit by Delegates.notNull()
-    var itemLongClick: (ComponentName) -> Unit by Delegates.notNull()
+    var itemClick: (ComponentName) -> Unit = {}
+    var itemLongClick: (ComponentName) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
         val view = LayoutInflater.from(context).inflate(R.layout.app_grid_item, parent, false)
