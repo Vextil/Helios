@@ -2,7 +2,7 @@ package io.vextil.launcher.models
 
 import android.graphics.drawable.Drawable
 
-data class AppModel(
+data class App(
         val name: String,
         val pack: String,
         val activity: String,

@@ -2,42 +2,26 @@ package io.vextil.launcher
 
 import android.content.AsyncTaskLoader
 import android.content.Context
-import android.content.Intent
-import io.vextil.launcher.models.AppModel
+import io.vextil.launcher.managers.AppManager
+import io.vextil.launcher.managers.WebAppManager
+import io.vextil.launcher.models.App
 
-class AppsLoader(context: Context) : AsyncTaskLoader<List<AppModel>>(context) {
+class AppsLoader(context: Context) : AsyncTaskLoader<List<App>>(context) {
 
-    var apps: List<AppModel> = listOf()
-    val packageManager = context.packageManager
+    var apps: List<App> = listOf()
     val appChangesObserver = AppChangesReceiver(this)
-    val appHider = AppHider(context)
+    val appFetcher= AppManager(context)
+    val webAppFetcher = WebAppManager()
 
-    override fun loadInBackground(): List<AppModel> {
-        val apps = mutableListOf<AppModel>()
-        val intent = Intent(Intent.ACTION_MAIN, null)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-
-        val launchables = packageManager.queryIntentActivities(intent, 0)
-
-        launchables.forEach {
-            val packageName = it.activityInfo.applicationInfo.packageName
-            if (!appHider.isHidden(packageName)) {
-                val app = AppModel(
-                    name = it.loadLabel(packageManager).toString(),
-                    pack = packageName,
-                    activity = it.activityInfo.name,
-                    icon = it.activityInfo.loadIcon(packageManager),
-                    iconResource = it.activityInfo.iconResource
-                )
-                apps.add(app)
-            }
-        }
-        apps.add(AppModel("Control", "io.vextil.launcher", "https://androidpolice.com", context.getDrawable(R.drawable.ic_launcher), R.drawable.ic_launcher))
+    override fun loadInBackground(): List<App> {
+        val apps = mutableListOf<App>()
+        apps.addAll(appFetcher.all())
+        apps.addAll(webAppFetcher.all())
         apps.sortBy { it.name }
         return apps
     }
 
-    override fun deliverResult(apps: List<AppModel>) {
+    override fun deliverResult(apps: List<App>) {
         if (isStarted) super.deliverResult(apps)
         this.apps = apps
     }

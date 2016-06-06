@@ -10,29 +10,29 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import io.vextil.launcher.*
 import io.vextil.launcher.adapters.AppsAdapter
-import io.vextil.launcher.models.AppModel
+import io.vextil.launcher.models.App
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlin.properties.Delegates
 
-class HomeActivity(): Activity(), LoaderCallbacks<List<AppModel>> {
+class HomeActivity(): Activity(), LoaderCallbacks<List<App>> {
 
     var adapter = AppsAdapter(this)
     var loader: AppsLoader by Delegates.notNull()
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppModel>> {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<App>> {
         loader = AppsLoader(this)
         return loader
     }
 
-    override fun onLoadFinished(loader: Loader<List<AppModel>>, data: List<AppModel>) {
+    override fun onLoadFinished(loader: Loader<List<App>>, data: List<App>) {
         adapter.swapData(data)
     }
 
-    override fun onLoaderReset(loader: Loader<List<AppModel>>?) {
+    override fun onLoaderReset(loader: Loader<List<App>>?) {
         throw UnsupportedOperationException()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
         loaderManager.initLoader(0, null, this)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
