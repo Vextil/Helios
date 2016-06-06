@@ -1,10 +1,11 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Material.Wallpaper.NoTitleBar">
-        <!-- Customize your theme here. -->
+    <style name="LauncherTheme" parent="android:Theme.Material.Wallpaper.NoTitleBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="WebTheme" parent="android:Theme.Material.NoActionBar">
     </style>
 
 </resources>

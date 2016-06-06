@@ -3,7 +3,7 @@ package io.vextil.launcher
 import android.content.AsyncTaskLoader
 import android.content.Context
 import android.content.Intent
-import io.vextil.launcher.Models.AppModel
+import io.vextil.launcher.models.AppModel
 
 class AppsLoader(context: Context) : AsyncTaskLoader<List<AppModel>>(context) {
 
@@ -26,11 +26,13 @@ class AppsLoader(context: Context) : AsyncTaskLoader<List<AppModel>>(context) {
                     name = it.loadLabel(packageManager).toString(),
                     pack = packageName,
                     activity = it.activityInfo.name,
-                    icon = it.activityInfo.loadIcon(packageManager)
+                    icon = it.activityInfo.loadIcon(packageManager),
+                    iconResource = it.activityInfo.iconResource
                 )
                 apps.add(app)
             }
         }
+        apps.add(AppModel("Control", "io.vextil.launcher", "https://androidpolice.com", context.getDrawable(R.drawable.ic_launcher), R.drawable.ic_launcher))
         apps.sortBy { it.name }
         return apps
     }
