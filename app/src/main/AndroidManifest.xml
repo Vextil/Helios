@@ -30,8 +30,12 @@
         <activity
             android:name=".activities.WebAppActivity"
             android:label="Web App"
-            android:theme="@style/WebTheme">
-        </activity>
+            android:theme="@style/WebTheme"/>
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="Settings"
+            android:theme="@style/SettingsTheme"/>
 
     </application>
 
