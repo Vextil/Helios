@@ -10,7 +10,7 @@ import io.vextil.launcher.models.App
 import io.vextil.launcher.R
 import kotlinx.android.synthetic.main.app_grid_item.view.*
 
-class AppsAdapter(val context: Context) : RecyclerView.Adapter<AppsAdapter.ViewHolder>() {
+class LauncherAdapter(val context: Context) : RecyclerView.Adapter<LauncherAdapter.ViewHolder>() {
 
     var apps = listOf<App>()
     var itemClick: (App) -> Unit = {}

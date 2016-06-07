@@ -9,14 +9,14 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import io.vextil.launcher.*
-import io.vextil.launcher.adapters.AppsAdapter
+import io.vextil.launcher.adapters.LauncherAdapter
 import io.vextil.launcher.models.App
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlin.properties.Delegates
 
 class HomeActivity(): Activity(), LoaderCallbacks<List<App>> {
 
-    var adapter = AppsAdapter(this)
+    var adapter = LauncherAdapter(this)
     var loader: AppsLoader by Delegates.notNull()
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<App>> {
