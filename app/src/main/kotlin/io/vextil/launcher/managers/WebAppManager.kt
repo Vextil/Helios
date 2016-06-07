@@ -7,6 +7,8 @@ class WebAppManager {
 
     private val book = Paper.book("web-apps")
 
+    fun add(app: App) = book.write(app.activity, app)
+
     fun single(key: String) = book.read<App>(key)
 
     fun all(): List<App> {

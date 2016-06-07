@@ -10,16 +10,11 @@ class AppManager(context: Context) {
     val packageManager = context.packageManager
     val hidden = Paper.book("hidden-apps")
 
-    fun hide(app: App) {
-        hidden.write(app.pack, app)
-    }
+    fun hide(app: App) = hidden.write(app.pack, app)
 
-    fun show(app: App) {
-        hidden.delete(app.pack)
-    }
+    fun show(app: App) = hidden.delete(app.pack)
 
     fun isHidden(app: App) = hidden.exist(app.pack)
-
 
     fun all(): List<App> {
         val apps = mutableListOf<App>()
