@@ -32,7 +32,7 @@ class HomeActivity(): Activity(), LoaderCallbacks<List<App>> {
         throw UnsupportedOperationException()
     }
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loaderManager.initLoader(0, null, this)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

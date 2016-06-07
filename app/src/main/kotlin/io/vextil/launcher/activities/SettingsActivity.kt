@@ -5,7 +5,7 @@ import android.os.Bundle
 
 class SettingsActivity : Activity() {
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
 
     }
 
