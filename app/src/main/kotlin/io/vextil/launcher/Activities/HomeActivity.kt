@@ -38,7 +38,6 @@ class HomeActivity(): Activity(), LoaderCallbacks<List<App>> {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
         setContentView(R.layout.activity_home)
-        val appHider = AppHider(this)
 
         recycler.layoutManager = GridLayoutManager(this, 4)
         adapter.setOnClickListener {
@@ -59,7 +58,6 @@ class HomeActivity(): Activity(), LoaderCallbacks<List<App>> {
             }
         }
         adapter.setOnLongClickListener {
-            appHider.add(it.pack)
             loader.onContentChanged()
         }
         recycler.adapter = adapter

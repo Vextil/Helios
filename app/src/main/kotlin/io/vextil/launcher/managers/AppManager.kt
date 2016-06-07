@@ -3,13 +3,11 @@ package io.vextil.launcher.managers
 import android.content.Context
 import android.content.Intent
 import io.paperdb.Paper
-import io.vextil.launcher.AppHider
 import io.vextil.launcher.models.App
 
 class AppManager(context: Context) {
 
     val packageManager = context.packageManager
-    val appHider = AppHider(context)
     val hidden = Paper.book("hidden-apps")
 
     fun hide(app: App) {
@@ -20,6 +18,9 @@ class AppManager(context: Context) {
         hidden.delete(app.pack)
     }
 
+    fun isHidden(app: App) = hidden.exist(app.pack)
+
+
     fun all(): List<App> {
         val apps = mutableListOf<App>()
         val intent = Intent(Intent.ACTION_MAIN, null)
@@ -28,17 +29,14 @@ class AppManager(context: Context) {
         val launchables = packageManager.queryIntentActivities(intent, 0)
 
         launchables.forEach {
-            val packageName = it.activityInfo.applicationInfo.packageName
-            if (!appHider.isHidden(packageName)) {
-                val app = App(
-                        name = it.loadLabel(packageManager).toString(),
-                        pack = packageName,
-                        activity = it.activityInfo.name,
-                        icon = it.activityInfo.loadIcon(packageManager),
-                        iconResource = it.activityInfo.iconResource
-                )
-                apps.add(app)
-            }
+            val app = App(
+                    name = it.loadLabel(packageManager).toString(),
+                    pack = it.activityInfo.applicationInfo.packageName,
+                    activity = it.activityInfo.name,
+                    icon = it.activityInfo.loadIcon(packageManager),
+                    iconResource = it.activityInfo.iconResource
+            )
+            if (!isHidden(app)) apps.add(app)
         }
         return apps
     }
