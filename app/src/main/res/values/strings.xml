@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Launcher</string>
     <string name="title_activity_home">Home</string>
-    <string name="title_activity_home_settings">Settings</string>
 </resources>

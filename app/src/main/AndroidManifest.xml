@@ -14,6 +14,7 @@
         android:stateNotNeeded="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activities.HomeActivity"
             android:excludeFromRecents="true"
@@ -23,24 +24,20 @@
             android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.WebAppActivity"
             android:label="Web App"
             android:theme="@style/WebTheme" />
+
         <activity
             android:name=".activities.settings.HomeSettingsActivity"
-            android:label="@string/title_activity_home_settings"
-            android:parentActivityName=".activities.HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.vextil.launcher.activities.HomeActivity" />
-        </activity>
+            android:label="Settings"/>
     </application>
 
 </manifest>

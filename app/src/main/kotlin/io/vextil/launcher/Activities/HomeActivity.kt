@@ -8,7 +8,6 @@ import android.content.Loader
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
-import android.view.animation.AnimationUtils
 import io.vextil.launcher.*
 import io.vextil.launcher.adapters.LauncherAdapter
 import io.vextil.launcher.models.App
