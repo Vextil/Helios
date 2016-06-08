@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.app_grid_item.view.*
 class LauncherAdapter(val context: Context) : RecyclerView.Adapter<LauncherAdapter.ViewHolder>() {
 
     var apps = listOf<App>()
-    var itemClick: (App) -> Unit = {}
+    var itemClick: (View, App) -> Unit = { view, app -> }
     var itemLongClick: (App) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
@@ -30,7 +30,7 @@ class LauncherAdapter(val context: Context) : RecyclerView.Adapter<LauncherAdapt
         notifyDataSetChanged()
     }
 
-    fun setOnClickListener (itemClick: (App) -> Unit) {
+    fun setOnClickListener (itemClick: (View, App) -> Unit) {
         this.itemClick = itemClick
     }
 
@@ -41,7 +41,7 @@ class LauncherAdapter(val context: Context) : RecyclerView.Adapter<LauncherAdapt
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         fun bindData(app : App) {
             view.item_app_icon.setImageDrawable(app.icon)
-            view.setOnClickListener { itemClick(app) }
+            view.setOnClickListener { itemClick(view, app) }
             view.setOnLongClickListener { itemLongClick(app);true }
         }
     }

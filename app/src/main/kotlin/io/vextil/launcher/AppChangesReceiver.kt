@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 
-class AppChangesReceiver(val loader: AppsLoader): BroadcastReceiver() {
+class AppChangesReceiver(val loader: AppsAsyncLoader): BroadcastReceiver() {
 
     val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
     val sdFilter = IntentFilter()

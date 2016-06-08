@@ -8,6 +8,7 @@ import android.content.Loader
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
+import android.view.animation.AnimationUtils
 import io.vextil.launcher.*
 import io.vextil.launcher.adapters.LauncherAdapter
 import io.vextil.launcher.models.App
@@ -17,10 +18,10 @@ import kotlin.properties.Delegates
 class HomeActivity(): Activity(), LoaderCallbacks<List<App>> {
 
     var adapter = LauncherAdapter(this)
-    var loader: AppsLoader by Delegates.notNull()
+    var loader: AppsAsyncLoader by Delegates.notNull()
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<App>> {
-        loader = AppsLoader(this)
+        loader = AppsAsyncLoader(this)
         return loader
     }
 
@@ -40,17 +41,17 @@ class HomeActivity(): Activity(), LoaderCallbacks<List<App>> {
         setContentView(R.layout.activity_home)
 
         recycler.layoutManager = GridLayoutManager(this, 4)
-        adapter.setOnClickListener {
-            if (it.pack.equals("io.vextil.launcher")) {
+        adapter.setOnClickListener { view, app ->
+            if (app.pack.equals("io.vextil.launcher")) {
                 val intent = Intent(this, WebAppActivity::class.java);
-                intent.putExtra("TITLE", it.name)
-                intent.putExtra("ICON", it.iconResource)
-                intent.putExtra("WEB-URL", it.activity)
+                intent.putExtra("TITLE", app.name)
+                intent.putExtra("ICON", app.iconResource)
+                intent.putExtra("WEB-URL", app.activity)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
                 startActivity(intent);
             } else {
                 val intent = Intent(Intent.ACTION_MAIN)
-                intent.component = ComponentName(it.pack, it.activity)
+                intent.component = ComponentName(app.pack, app.activity)
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
