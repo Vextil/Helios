@@ -44,7 +44,4 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:palette-v7:23.4.0'
     compile 'io.paperdb:paperdb:1.5'
-    compile('com.mikepenz:materialdrawer:5.3.0@aar') {
-        transitive = true
-    }
 }

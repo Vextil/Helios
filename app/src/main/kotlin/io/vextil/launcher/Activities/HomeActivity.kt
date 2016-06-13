@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.GridLayoutManager
@@ -27,25 +28,14 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         super.onCreate(savedInstanceState)
         supportLoaderManager.initLoader(0, null, this)
 
+        setUpContent()
+        setUpToolbar()
+        setUpDrawer()
+        setUpWallpaper()
+    }
+
+    fun setUpContent() {
         setContentView(R.layout.activity_home)
-        setSupportActionBar(toolbar)
-
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-
-        var statusBarHeight = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            statusBarHeight= resources.getDimensionPixelSize(resourceId)
-        }
-
-        toolbar.setPadding(0, statusBarHeight, 0, 0)
-
-        val wallpaperManager = WallpaperManager.getInstance(this)
-        main.background = wallpaperManager.drawable
-        Palette.from((wallpaperManager.drawable as BitmapDrawable).bitmap).generate(){
-            toolbar.background = ColorDrawable(it.getVibrantColor(0))
-        }
-
         recycler.layoutManager = GridLayoutManager(this, 4)
         adapter.setOnClickListener { view, app ->
             if (app.pack.equals("io.vextil.launcher")) {
@@ -68,6 +58,30 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
             loader.onContentChanged()
         }
         recycler.adapter = adapter
+    }
+
+    fun setUpToolbar(){
+        setSupportActionBar(toolbar)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        var statusBarHeight = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0)
+            statusBarHeight= resources.getDimensionPixelSize(resourceId)
+        toolbar.setPadding(0, statusBarHeight, 0, 0)
+    }
+
+    fun setUpDrawer(){
+        val toolbarDrawerToggle = ActionBarDrawerToggle(this, drawer, toolbar, 0, 0)
+        drawer.addDrawerListener(toolbarDrawerToggle)
+        toolbarDrawerToggle.syncState()
+    }
+
+    fun setUpWallpaper(){
+        val wallpaperManager = WallpaperManager.getInstance(this)
+        main.background = wallpaperManager.drawable
+        Palette.from((wallpaperManager.drawable as BitmapDrawable).bitmap).generate(){
+            toolbar.background = ColorDrawable(it.getVibrantColor(0))
+        }
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<App>> {
