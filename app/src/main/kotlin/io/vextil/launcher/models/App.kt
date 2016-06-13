@@ -7,5 +7,10 @@ data class App(
         val pack: String,
         val activity: String,
         val icon: Drawable,
-        val iconResource: Int
-)
+        val iconResource: Int,
+        val category: Category = Category.APP
+) {
+    enum class Category {
+        APP, GAME
+    }
+}

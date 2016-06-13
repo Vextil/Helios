@@ -1,7 +1,7 @@
 package io.vextil.launcher
 
-import android.content.AsyncTaskLoader
 import android.content.Context
+import android.support.v4.content.AsyncTaskLoader
 import io.vextil.launcher.managers.AppManager
 import io.vextil.launcher.managers.WebAppManager
 import io.vextil.launcher.models.App

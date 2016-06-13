@@ -1,10 +1,12 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Material.Light"/>
+    <style name="AppTheme" parent="Theme.AppCompat"/>
 
-    <style name="LauncherTheme" parent="android:Theme.Material.Wallpaper.NoTitleBar">
-        <item name="android:windowTranslucentStatus">true</item>
+    <style name="LauncherTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimary">@android:color/holo_green_light</item>
+        <item name="android:colorPrimaryDark">@android:color/holo_green_dark</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="WebTheme" parent="android:Theme.Material.NoActionBar"/>

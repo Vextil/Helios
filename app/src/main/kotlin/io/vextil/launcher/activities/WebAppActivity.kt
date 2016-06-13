@@ -39,7 +39,7 @@ class WebAppActivity: Activity() {
         override fun onPageFinished(view: WebView, url: String) {
             view.evaluateJavascript(
                     "(function() { return (document.querySelectorAll('[name=theme-color]')[0].getAttribute('content')); })();"
-            ) { setTaskDescription(TaskDescription(title, icon, Color.parseColor(it.substring(1,8)))) };
+            ) { setTaskDescription(TaskDescription(title, icon, Color.parseColor(it.substring(1,8)))) }
         }
     }
 
