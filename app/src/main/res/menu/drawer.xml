@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_home"
+            android:icon="@drawable/ic_launcher"
+            android:title="Wallpapers"/>
+
+        <item
+            android:id="@+id/drawer_favourite"
+            android:icon="@drawable/ic_launcher"
+            android:title="App Hider"/>
+
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_launcher"
+            android:title="Web Apps"/>
+
+    </group>
+</menu>

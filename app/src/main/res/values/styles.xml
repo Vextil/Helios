@@ -3,8 +3,11 @@
     <style name="AppTheme" parent="Theme.AppCompat"/>
 
     <style name="LauncherTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@android:color/holo_green_light</item>
-        <item name="android:colorPrimaryDark">@android:color/holo_green_dark</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:colorPrimary">@android:color/darker_gray</item>
+        <item name="android:colorPrimaryDark">@android:color/darker_gray</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>

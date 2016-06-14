@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -17,7 +17,8 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler"
@@ -28,21 +29,15 @@
                 android:fadingEdgeLength="80dp"
                 android:fitsSystemWindows="true"/>
 
-        <LinearLayout
-            android:background="@android:color/white"
-            android:layout_width="304dp"
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:fitsSystemWindows="true">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="DRAWER"/>
-
-        </LinearLayout>
+            android:background="@android:color/white"
+            app:menu="@menu/drawer"/>
 
     </android.support.v4.widget.DrawerLayout>
 
-</LinearLayout>
-
+</RelativeLayout>

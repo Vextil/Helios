@@ -23,6 +23,7 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
 
     var adapter = LauncherAdapter(this)
     var loader: AppsAsyncLoader by Delegates.notNull()
+    var shouldUpdateToolbarColor = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,13 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         setUpContent()
         setUpToolbar()
         setUpDrawer()
-        setUpWallpaper()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (shouldUpdateToolbarColor) {
+            updateToolbarColor()
+        }
     }
 
     fun setUpContent() {
@@ -63,22 +70,35 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
     fun setUpToolbar(){
         setSupportActionBar(toolbar)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        // Calculate Status Bar height
         var statusBarHeight = 0
         val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0)
             statusBarHeight= resources.getDimensionPixelSize(resourceId)
+        // Apply the Status Bar height as the Toolbar's top padding
+        // This allows the Toolbar to show behind the Status Bar, "sharing" the color
         toolbar.setPadding(0, statusBarHeight, 0, 0)
+        updateToolbarColor()
     }
 
     fun setUpDrawer(){
         val toolbarDrawerToggle = ActionBarDrawerToggle(this, drawer, toolbar, 0, 0)
         drawer.addDrawerListener(toolbarDrawerToggle)
         toolbarDrawerToggle.syncState()
+        navigation.setNavigationItemSelectedListener {
+            if (it.title.equals("Wallpapers")) {
+                drawer.closeDrawers()
+                shouldUpdateToolbarColor = true
+                val intent = Intent(Intent.ACTION_SET_WALLPAPER);
+                startActivity(Intent.createChooser(intent, "Select Wallpaper"))
+            }
+            true
+        }
     }
 
-    fun setUpWallpaper(){
+    fun updateToolbarColor() {
+        // Get wallpaper so we can set the toolbar color based on it
         val wallpaperManager = WallpaperManager.getInstance(this)
-        main.background = wallpaperManager.drawable
         Palette.from((wallpaperManager.drawable as BitmapDrawable).bitmap).generate(){
             toolbar.background = ColorDrawable(it.getVibrantColor(0))
         }
