@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.webkit.CookieManager
-import android.webkit.WebSettings
 import android.webkit.WebView
 import io.vextil.launcher.*
 import kotlinx.android.synthetic.main.activity_web.*
@@ -29,7 +28,6 @@ class WebAppActivity: Activity() {
 
         CookieManager.getInstance().setAcceptThirdPartyCookies(webview, true)
         webview.setWebViewClient(WebViewClient())
-        webview.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         webview.settings.javaScriptEnabled = true
 
         webview.loadUrl(intent.extras.getString("WEB-URL"))
