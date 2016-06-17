@@ -24,6 +24,7 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
     var adapter = LauncherAdapter(this)
     var loader: AppsAsyncLoader by Delegates.notNull()
     var shouldUpdateToolbarColor = false
+    var shouldRefreshApps = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +37,10 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
 
     override fun onResume() {
         super.onResume()
-        if (shouldUpdateToolbarColor) {
-            updateToolbarColor()
+        if (shouldUpdateToolbarColor) updateToolbarColor()
+        if (shouldRefreshApps) {
+            loader.onContentChanged()
+            adapter.notifyDataSetChanged()
         }
     }
 

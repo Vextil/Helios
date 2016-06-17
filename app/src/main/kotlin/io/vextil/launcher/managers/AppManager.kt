@@ -16,7 +16,7 @@ class AppManager(val context: Context) {
 
     fun show(app: App) = hidden.delete(app.pack)
 
-    fun isHidden(app: App) = hidden.exist(app.pack)
+    fun isHidden(app: App) = hidden.exist(app.pack) || app.pack.equals("io.vextil.launcher")
 
     fun all(): List<App> {
         val apps = mutableListOf<App>()
@@ -26,7 +26,6 @@ class AppManager(val context: Context) {
         val launchables = packageManager.queryIntentActivities(intent, 0)
 
         launchables.forEach {
-
             val app = App(
                     name = it.loadLabel(packageManager).toString(),
                     pack = it.activityInfo.applicationInfo.packageName,
@@ -35,7 +34,7 @@ class AppManager(val context: Context) {
                     iconResource = it.activityInfo.iconResource,
                     category = getAppCategory(it.activityInfo.applicationInfo)
             )
-            if (!isHidden(app) && getAppCategory(it.activityInfo.applicationInfo) != App.Category.GAME) apps.add(app)
+            if (!isHidden(app)) apps.add(app)
         }
 
         apps.add(App(
