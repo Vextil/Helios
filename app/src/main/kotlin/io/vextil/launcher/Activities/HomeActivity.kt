@@ -89,11 +89,14 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         drawer.addDrawerListener(toolbarDrawerToggle)
         toolbarDrawerToggle.syncState()
         navigation.setNavigationItemSelectedListener {
+            drawer.closeDrawers()
             if (it.title.equals("Wallpapers")) {
-                drawer.closeDrawers()
                 shouldUpdateToolbarColor = true
                 val intent = Intent(Intent.ACTION_SET_WALLPAPER);
                 startActivity(Intent.createChooser(intent, "Select Wallpaper"))
+            } else if (it.title.equals("Web Apps")) {
+                val intent = Intent(this, WebAppSettingsActivity::class.java)
+                startActivity(intent)
             }
             true
         }

@@ -12,7 +12,6 @@
         android:label="@string/app_name"
         android:launchMode="singleTask"
         android:stateNotNeeded="true">
-
         <activity
             android:name=".activities.HomeActivity"
             android:excludeFromRecents="true"
@@ -22,20 +21,22 @@
             android:theme="@style/LauncherTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.WebAppActivity"
             android:label="Web App"
             android:theme="@style/WebTheme" />
-
         <activity
             android:name=".activities.settings.HomeSettingsActivity"
-            android:label="Settings"/>
+            android:label="Settings" />
+        <activity
+            android:name=".activities.WebAppSettingsActivity"
+            android:theme="@style/SettingsTheme"/>
     </application>
 
 </manifest>
