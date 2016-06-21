@@ -14,8 +14,7 @@
 
     <style name="WebTheme" parent="android:Theme.Material.NoActionBar"/>
 
-    <style name="SettingsTheme" parent="Theme.AppCompat.Light">
-
+    <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
 </resources>
