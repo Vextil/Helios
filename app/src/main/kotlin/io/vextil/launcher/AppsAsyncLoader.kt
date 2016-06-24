@@ -11,7 +11,7 @@ class AppsAsyncLoader(context: Context) : AsyncTaskLoader<List<App>>(context) {
     var apps: List<App> = listOf()
     val appChangesObserver = AppChangesReceiver(this)
     val appFetcher = AppManager(context)
-    val webAppFetcher = WebAppManager()
+    val webAppFetcher = WebAppManager(context)
 
     override fun loadInBackground(): List<App> {
         val apps = mutableListOf<App>()

@@ -45,6 +45,8 @@ dependencies {
     compile "com.android.support:recyclerview-v7:24.0.0"
     compile "com.android.support:palette-v7:24.0.0"
     compile "io.paperdb:paperdb:1.5"
+    compile 'com.google.firebase:firebase-core:9.0.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

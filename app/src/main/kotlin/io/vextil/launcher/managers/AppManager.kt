@@ -36,15 +36,6 @@ class AppManager(val context: Context) {
             )
             if (!isHidden(app)) apps.add(app)
         }
-
-        apps.add(App(
-                name = "Control",
-                pack = "io.vextil.launcher",
-                activity = "http://guarana.duckdns.org",
-                icon = context.getDrawable(R.drawable.ic_launcher),
-                iconResource = R.drawable.ic_launcher,
-                category = App.Category.APP
-        ))
         return apps
     }
 
