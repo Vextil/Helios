@@ -4,22 +4,41 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import io.paperdb.Paper
-import io.vextil.launcher.R
 import io.vextil.launcher.models.App
 
-class AppManager(val context: Context) {
+class AppsManager(val context: Context) {
 
     val packageManager = context.packageManager
+    val apps = mutableListOf<App>()
     val hidden = Paper.book("hidden-apps")
 
-    fun hide(app: App) = hidden.write(app.pack, app)
+    enum class FILTER {
+        ALL, VISIBLE, HIDDEN
+    }
 
-    fun show(app: App) = hidden.delete(app.pack)
+    fun hide(app: App) {
+        hidden.write(app.pack, app.pack)
+        app.visible = false
+    }
 
-    fun isHidden(app: App) = hidden.exist(app.pack) || app.pack.equals("io.vextil.launcher")
+    fun show(app: App) {
+        hidden.delete(app.pack)
+        app.visible = true
+    }
 
-    fun all(): List<App> {
-        val apps = mutableListOf<App>()
+    fun isVisible(pack: String) = !hidden.exist(pack) && !pack.equals("io.vextil.launcher")
+
+    fun all(filter: FILTER = FILTER.ALL, forceUpdate: Boolean = false): List<App> {
+        if (forceUpdate) fetch()
+        when (filter) {
+            FILTER.ALL -> return apps
+            FILTER.VISIBLE -> return apps.filter{ it.visible }
+            FILTER.HIDDEN -> return apps.filter{ !it.visible }
+        }
+    }
+
+    fun fetch() {
+        apps.clear()
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
 
@@ -32,22 +51,14 @@ class AppManager(val context: Context) {
                     activity = it.activityInfo.name,
                     icon = it.activityInfo.loadIcon(packageManager),
                     iconResource = it.activityInfo.iconResource,
-                    category = getAppCategory(it.activityInfo.applicationInfo)
+                    visible = isVisible(it.activityInfo.applicationInfo.packageName),
+                    category = getCategory(it.activityInfo.applicationInfo)
             )
-            if (!isHidden(app)) apps.add(app)
+            apps.add(app)
         }
-        return apps
     }
 
-    fun allHidden(): List<App> {
-        val apps = mutableListOf<App>()
-        hidden.allKeys.forEach {
-            apps.add(hidden.read(it))
-        }
-        return apps
-    }
-
-    fun getAppCategory(info: ApplicationInfo): App.Category {
+    fun getCategory(info: ApplicationInfo): App.Category {
         if (info.flags.and(ApplicationInfo.FLAG_IS_GAME) == ApplicationInfo.FLAG_IS_GAME)
             return App.Category.GAME
         return App.Category.APP

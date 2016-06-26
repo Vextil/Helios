@@ -23,7 +23,6 @@ class WebAppActivity: Activity() {
 
         title =  intent.extras.getString("TITLE")
         icon = BitmapFactory.decodeResource(resources, intent.extras.getInt("ICON"))
-
         setTaskDescription(TaskDescription(title, icon))
 
         CookieManager.getInstance().setAcceptThirdPartyCookies(webview, true)
@@ -38,6 +37,14 @@ class WebAppActivity: Activity() {
             view.evaluateJavascript(
                     "(function() { return (document.querySelectorAll('[name=theme-color]')[0].getAttribute('content')); })();"
             ) { setTaskDescription(TaskDescription(title, icon, Color.parseColor(it.substring(1,8)))) }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (webview.canGoBack()) {
+            webview.goBack()
+        } else {
+            super.onBackPressed()
         }
     }
 

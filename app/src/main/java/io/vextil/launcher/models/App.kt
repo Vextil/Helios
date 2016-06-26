@@ -8,6 +8,7 @@ data class App(
         val activity: String,
         val icon: Drawable,
         val iconResource: Int,
+        var visible: Boolean,
         val category: Category = Category.APP
 ) {
     enum class Category {

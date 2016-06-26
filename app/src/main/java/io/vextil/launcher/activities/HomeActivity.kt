@@ -14,6 +14,8 @@ import android.support.v7.graphics.Palette
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import io.vextil.launcher.*
+import io.vextil.launcher.activities.settings.AppSettingsActivity
+import io.vextil.launcher.activities.settings.WebAppSettingsActivity
 import io.vextil.launcher.adapters.LauncherAdapter
 import io.vextil.launcher.models.App
 import kotlinx.android.synthetic.main.activity_home.*
@@ -23,11 +25,13 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
 
     var adapter = LauncherAdapter(this)
     var loader: AppsAsyncLoader by Delegates.notNull()
+    var wallpaperManager: WallpaperManager by Delegates.notNull()
     var shouldUpdateToolbarColor = false
     var shouldRefreshApps = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        wallpaperManager = WallpaperManager.getInstance(this)
         supportLoaderManager.initLoader(0, null, this)
 
         setUpContent()
@@ -37,10 +41,13 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
 
     override fun onResume() {
         super.onResume()
-        if (shouldUpdateToolbarColor) updateToolbarColor()
-        if (shouldRefreshApps) {
+        if (shouldUpdateToolbarColor){
+            shouldUpdateToolbarColor = false
+            updateToolbarColor()
+        }
+        if (shouldRefreshApps){
+            shouldRefreshApps = false
             loader.onContentChanged()
-            adapter.notifyDataSetChanged()
         }
     }
 
@@ -48,21 +55,21 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         setContentView(R.layout.activity_home)
         recycler.layoutManager = GridLayoutManager(this, 4)
         adapter.setOnClickListener { view, app ->
+            val intent: Intent
             if (app.pack.equals("io.vextil.launcher")) {
-                val intent = Intent(this, WebAppActivity::class.java)
+                intent = Intent(this, WebAppActivity::class.java)
                 intent.putExtra("TITLE", app.name)
                 intent.putExtra("ICON", app.iconResource)
                 intent.putExtra("WEB-URL", app.activity)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-                startActivity(intent);
             } else {
-                val intent = Intent(Intent.ACTION_MAIN)
+                intent = Intent(Intent.ACTION_MAIN)
                 intent.component = ComponentName(app.pack, app.activity)
                 intent.addCategory(Intent.CATEGORY_LAUNCHER)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
-                startActivity(intent)
             }
+            startActivity(intent);
         }
         adapter.setOnLongClickListener {
             loader.onContentChanged()
@@ -77,7 +84,7 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         var statusBarHeight = 0
         val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0)
-            statusBarHeight= resources.getDimensionPixelSize(resourceId)
+            statusBarHeight = resources.getDimensionPixelSize(resourceId)
         // Apply the Status Bar height as the Toolbar's top padding
         // This allows the Toolbar to show behind the Status Bar, "sharing" the color
         toolbar.setPadding(0, statusBarHeight, 0, 0)
@@ -90,28 +97,30 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         toolbarDrawerToggle.syncState()
         navigation.setNavigationItemSelectedListener {
             drawer.closeDrawers()
+            var intent: Intent
             if (it.title.equals("Wallpapers")) {
                 shouldUpdateToolbarColor = true
-                val intent = Intent(Intent.ACTION_SET_WALLPAPER);
-                startActivity(Intent.createChooser(intent, "Select Wallpaper"))
-            } else if (it.title.equals("Web Apps")) {
-                val intent = Intent(this, WebAppSettingsActivity::class.java)
-                startActivity(intent)
+                intent = Intent(Intent.ACTION_SET_WALLPAPER)
+                intent = Intent.createChooser(intent, "Select Wallpaper")
+            } else if (it.title.equals("App Hider")) {
+                shouldRefreshApps = true
+                intent = Intent(this, AppSettingsActivity::class.java)
+            } else {
+                intent = Intent(this, WebAppSettingsActivity::class.java)
             }
+            startActivity(intent)
             true
         }
     }
 
     fun updateToolbarColor() {
-        // Get wallpaper so we can set the toolbar color based on it
-        val wallpaperManager = WallpaperManager.getInstance(this)
         Palette.from((wallpaperManager.drawable as BitmapDrawable).bitmap).generate(){
             toolbar.background = ColorDrawable(it.getVibrantColor(0))
         }
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<App>> {
-        loader = AppsAsyncLoader(this)
+        loader = AppsAsyncLoader(Application.appsManager, Application.webAppsManager, this)
         return loader
     }
 

@@ -32,12 +32,12 @@
             android:label="Web App"
             android:theme="@style/WebTheme" />
         <activity
-            android:name=".activities.settings.HomeSettingsActivity"
-            android:label="Settings" />
-        <activity
-            android:name=".activities.WebAppSettingsActivity"
+            android:name=".activities.settings.WebAppSettingsActivity"
             android:theme="@style/SettingsTheme" />
-        <activity android:name=".activities.AppSettingsActivity"></activity>
+        <activity
+            android:name=".activities.settings.AppSettingsActivity"
+            android:theme="@style/SettingsTheme" />
+        <activity android:name=".activities.settings.GeneralSettingsActivity"></activity>
     </application>
 
 </manifest>
