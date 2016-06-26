@@ -28,7 +28,6 @@ class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsA
         view.toggle.isChecked = app.visible
 
         view.toggle.setOnClickListener() { it as Switch
-            Log.e("APPLICATION!!!!!!!!!!!", app.pack.toString())
             if (it.isChecked) {
                 appsManager.show(app)
                 it.isChecked = true
