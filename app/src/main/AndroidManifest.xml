@@ -36,7 +36,8 @@
             android:label="Settings" />
         <activity
             android:name=".activities.WebAppSettingsActivity"
-            android:theme="@style/SettingsTheme"/>
+            android:theme="@style/SettingsTheme" />
+        <activity android:name=".activities.AppSettingsActivity"></activity>
     </application>
 
 </manifest>

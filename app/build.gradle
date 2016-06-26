@@ -26,10 +26,6 @@ android {
         versionName "0.0.1"
     }
 
-    sourceSets {
-        main.java.srcDirs += "src/main/kotlin"
-    }
-
     buildTypes {
         release {
             minifyEnabled false
