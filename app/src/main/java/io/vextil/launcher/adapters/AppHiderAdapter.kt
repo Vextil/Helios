@@ -9,7 +9,7 @@ import android.widget.CompoundButton
 import android.widget.Switch
 import io.vextil.launcher.R
 import io.vextil.launcher.managers.AppsManager
-import io.vextil.launcher.models.App
+import io.vextil.launcher.models.AppModel
 import kotlinx.android.synthetic.main.app_settings_list_item.view.*
 
 class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsAdapter(context) {
@@ -22,7 +22,7 @@ class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsA
         return inflater.inflate(R.layout.app_settings_list_item, parent, false)
     }
 
-    override fun onBindData(view: View, app: App) {
+    override fun onBindData(view: View, app: AppModel) {
         view.name.text = app.name
         view.icon.setImageDrawable(app.icon)
         view.toggle.isChecked = app.visible

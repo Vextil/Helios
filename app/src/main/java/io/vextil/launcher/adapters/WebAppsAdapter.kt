@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.vextil.launcher.R
-import io.vextil.launcher.models.App
+import io.vextil.launcher.models.AppModel
 import kotlinx.android.synthetic.main.webapp_settings_list_item.view.*
 
 class WebAppsAdapter(context: Context): BaseAppsAdapter(context) {
@@ -14,7 +14,7 @@ class WebAppsAdapter(context: Context): BaseAppsAdapter(context) {
         return inflater.inflate(R.layout.webapp_settings_list_item, parent, false)
     }
 
-    override fun onBindData(view: View, app: App) {
+    override fun onBindData(view: View, app: AppModel) {
         view.name.text = app.name
         view.url.text = app.activity
         view.icon.setImageDrawable(app.icon)

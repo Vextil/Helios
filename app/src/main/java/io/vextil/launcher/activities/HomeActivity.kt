@@ -17,11 +17,12 @@ import io.vextil.launcher.*
 import io.vextil.launcher.activities.settings.AppSettingsActivity
 import io.vextil.launcher.activities.settings.WebAppSettingsActivity
 import io.vextil.launcher.adapters.LauncherAdapter
-import io.vextil.launcher.models.App
+import io.vextil.launcher.async.AppsAsyncLoader
+import io.vextil.launcher.models.AppModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlin.properties.Delegates
 
-class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<App>> {
+class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<AppModel>> {
 
     var adapter = LauncherAdapter(this)
     var loader: AppsAsyncLoader by Delegates.notNull()
@@ -53,6 +54,7 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
 
     fun setUpContent() {
         setContentView(R.layout.activity_home)
+        title = Helios.settings.getString("header-text", "Joaquín Cuitiño")
         recycler.layoutManager = GridLayoutManager(this, 4)
         adapter.setOnClickListener { view, app ->
             val intent: Intent
@@ -119,16 +121,16 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         }
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<App>> {
-        loader = AppsAsyncLoader(Application.appsManager, Application.webAppsManager, this)
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppModel>> {
+        loader = AppsAsyncLoader(Helios.apps, Helios.webApps, this)
         return loader
     }
 
-    override fun onLoadFinished(loader: Loader<List<App>>, data: List<App>) {
+    override fun onLoadFinished(loader: Loader<List<AppModel>>, data: List<AppModel>) {
         adapter.swapData(data)
     }
 
-    override fun onLoaderReset(loader: Loader<List<App>>?) {
+    override fun onLoaderReset(loader: Loader<List<AppModel>>?) {
         throw UnsupportedOperationException()
     }
 

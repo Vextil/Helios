@@ -1,4 +1,4 @@
-package io.vextil.launcher
+package io.vextil.launcher.async
 
 import android.content.BroadcastReceiver
 import android.content.Context

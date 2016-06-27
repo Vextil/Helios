@@ -3,7 +3,7 @@ package io.vextil.launcher.activities.settings
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import io.vextil.launcher.Application
+import io.vextil.launcher.Helios
 import io.vextil.launcher.R
 import io.vextil.launcher.adapters.AppHiderAdapter
 import io.vextil.launcher.managers.AppsManager
@@ -16,7 +16,7 @@ class AppSettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_web_app_settings)
         setSupportActionBar(toolbar)
         title = "App Hider"
-        val adapter = AppHiderAdapter(Application.appsManager, this)
+        val adapter = AppHiderAdapter(Helios.apps, this)
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
     }

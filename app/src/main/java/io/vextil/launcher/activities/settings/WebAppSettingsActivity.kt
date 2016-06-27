@@ -3,7 +3,7 @@ package io.vextil.launcher.activities.settings
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import io.vextil.launcher.Application
+import io.vextil.launcher.Helios
 import io.vextil.launcher.R
 import io.vextil.launcher.adapters.WebAppsAdapter
 import kotlinx.android.synthetic.main.activity_web_app_settings.*
@@ -19,6 +19,6 @@ class WebAppSettingsActivity : AppCompatActivity() {
         val adapter = WebAppsAdapter(this)
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
-        adapter.swapData(Application.webAppsManager.all())
+        adapter.swapData(Helios.webApps.all())
     }
 }
