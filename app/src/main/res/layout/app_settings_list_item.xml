@@ -16,13 +16,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"/>
+
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/toggle"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="27dp"
-        android:layout_alignBottom="@+id/icon" />
+        android:layout_toStartOf="@id/delete"
+        android:layout_marginEnd="27dp" />
 
 </RelativeLayout>

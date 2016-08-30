@@ -1,10 +1,13 @@
 package io.vextil.launcher.adapters
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
 import io.vextil.launcher.R
@@ -26,7 +29,11 @@ class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsA
         view.name.text = app.name
         view.icon.setImageDrawable(app.icon)
         view.toggle.isChecked = app.visible
-
+        view.delete.setOnClickListener() {
+            val intent = Intent(Intent.ACTION_DELETE)
+            intent.data = Uri.parse("package:" + app.pack);
+            context.startActivity(intent);
+        }
         view.toggle.setOnClickListener() { it as Switch
             if (it.isChecked) {
                 appsManager.show(app)
