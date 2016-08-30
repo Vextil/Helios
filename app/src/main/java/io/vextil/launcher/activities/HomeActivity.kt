@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
@@ -22,7 +21,7 @@ import io.vextil.launcher.models.AppModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlin.properties.Delegates
 
-class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<AppModel>> {
+class HomeActivity(): AuthenticableActivity(), LoaderManager.LoaderCallbacks<List<AppModel>> {
 
     var adapter = LauncherAdapter(this)
     var loader: AppsAsyncLoader by Delegates.notNull()
