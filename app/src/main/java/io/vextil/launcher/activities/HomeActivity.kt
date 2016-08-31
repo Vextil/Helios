@@ -9,9 +9,13 @@ import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
+import android.widget.Toast
+import com.mtramin.rxfingerprint.RxFingerprint
+import com.mtramin.rxfingerprint.data.FingerprintResult
 import io.vextil.launcher.*
 import io.vextil.launcher.activities.settings.AppSettingsActivity
 import io.vextil.launcher.activities.settings.WebAppSettingsActivity
@@ -21,7 +25,7 @@ import io.vextil.launcher.models.AppModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlin.properties.Delegates
 
-class HomeActivity(): AuthenticableActivity(), LoaderManager.LoaderCallbacks<List<AppModel>> {
+class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<AppModel>> {
 
     var adapter = LauncherAdapter(this)
     var loader: AppsAsyncLoader by Delegates.notNull()
@@ -56,21 +60,24 @@ class HomeActivity(): AuthenticableActivity(), LoaderManager.LoaderCallbacks<Lis
         title = Helios.settings.getString("header-text", "Joaquín Cuitiño")
         recycler.layoutManager = GridLayoutManager(this, 4)
         adapter.setOnClickListener { view, app ->
-            val intent: Intent
             if (app.pack.equals("io.vextil.launcher")) {
-                intent = Intent(this, WebAppActivity::class.java)
-                intent.putExtra("TITLE", app.name)
-                intent.putExtra("ICON", app.iconResource)
-                intent.putExtra("WEB-URL", app.activity)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+                RxFingerprint.authenticate(this)
+                    .subscribe {
+                        when(it.result) {
+                            FingerprintResult.AUTHENTICATED -> openWebsite(app)
+                            FingerprintResult.FAILED -> Toast.makeText(this, "Shit", Toast.LENGTH_LONG).show()
+                            FingerprintResult.HELP -> Toast.makeText(this, "Help", Toast.LENGTH_LONG).show()
+                            else -> Toast.makeText(this, "WTF", Toast.LENGTH_LONG).show()
+                        }
+                }
             } else {
-                intent = Intent(Intent.ACTION_MAIN)
+                val intent = Intent(Intent.ACTION_MAIN)
                 intent.component = ComponentName(app.pack, app.activity)
                 intent.addCategory(Intent.CATEGORY_LAUNCHER)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+                startActivity(intent)
             }
-            startActivity(intent);
         }
         adapter.setOnLongClickListener {
             loader.onContentChanged()
@@ -118,6 +125,15 @@ class HomeActivity(): AuthenticableActivity(), LoaderManager.LoaderCallbacks<Lis
         Palette.from((wallpaperManager.drawable as BitmapDrawable).bitmap).generate(){
             toolbar.background = ColorDrawable(it.getVibrantColor(0))
         }
+    }
+
+    fun openWebsite(app: AppModel) {
+        val intent = Intent(this, WebAppActivity::class.java)
+        intent.putExtra("TITLE", app.name)
+        intent.putExtra("ICON", app.iconResource)
+        intent.putExtra("WEB-URL", app.activity)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+        startActivity(intent)
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppModel>> {
