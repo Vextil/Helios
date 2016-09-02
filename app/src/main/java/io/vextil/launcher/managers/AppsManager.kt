@@ -3,14 +3,17 @@ package io.vextil.launcher.managers
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+import io.paperdb.Book
 import io.paperdb.Paper
 import io.vextil.launcher.models.AppModel
 
 class AppsManager(val context: Context) {
 
-    val packageManager = context.packageManager
+    val packageManager: PackageManager = context.packageManager
     val apps = mutableListOf<AppModel>()
-    val hidden = Paper.book("hidden-apps")
+    val hidden: Book = Paper.book("hidden-apps")
+    val locked: Book = Paper.book("locked-apps")
 
     enum class FILTER {
         ALL, VISIBLE, HIDDEN
@@ -27,6 +30,18 @@ class AppsManager(val context: Context) {
     }
 
     fun isVisible(pack: String) = !hidden.exist(pack) && !pack.equals("io.vextil.launcher")
+
+    fun lock(app: AppModel) {
+        locked.write(app.pack, app.pack)
+        app.locked = true
+    }
+
+    fun unlock(app: AppModel) {
+        locked.delete(app.pack)
+        app.locked = false
+    }
+
+    fun isLocked(pack: String) = locked.exist(pack)
 
     fun all(filter: FILTER = FILTER.ALL, forceUpdate: Boolean = false): List<AppModel> {
         if (forceUpdate) fetch()
@@ -52,6 +67,7 @@ class AppsManager(val context: Context) {
                     icon = it.activityInfo.loadIcon(packageManager),
                     iconResource = it.activityInfo.iconResource,
                     visible = isVisible(it.activityInfo.applicationInfo.packageName),
+                    locked = isLocked(it.activityInfo.applicationInfo.packageName),
                     category = getCategory(it.activityInfo.applicationInfo)
             )
             apps.add(app)

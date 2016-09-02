@@ -28,19 +28,28 @@ class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsA
     override fun onBindData(view: View, app: AppModel) {
         view.name.text = app.name
         view.icon.setImageDrawable(app.icon)
-        view.toggle.isChecked = app.visible
+
         view.delete.setOnClickListener() {
             val intent = Intent(Intent.ACTION_DELETE)
-            intent.data = Uri.parse("package:" + app.pack);
-            context.startActivity(intent);
+            intent.data = Uri.parse("package:" + app.pack)
+            context.startActivity(intent)
         }
-        view.toggle.setOnClickListener() { it as Switch
+
+        view.hiddenToggle.isChecked = !app.visible
+        view.hiddenToggle.setOnClickListener() { it as Switch
             if (it.isChecked) {
-                appsManager.show(app)
-                it.isChecked = true
-            } else {
                 appsManager.hide(app)
-                it.isChecked = false
+            } else {
+                appsManager.show(app)
+            }
+        }
+
+        view.lockedToggle.isChecked = app.locked
+        view.lockedToggle.setOnClickListener() { it as Switch
+            if (it.isChecked) {
+                appsManager.lock(app)
+            } else {
+                appsManager.unlock(app)
             }
         }
     }

@@ -8,6 +8,7 @@ data class AppModel(
         val activity: String,
         val icon: Drawable,
         val iconResource: Int,
+        var locked: Boolean,
         var visible: Boolean,
         val category: Category = Category.APP
 ) {

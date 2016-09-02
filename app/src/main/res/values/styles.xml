@@ -10,6 +10,9 @@
         <item name="android:colorPrimaryDark">@android:color/darker_gray</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="swirl_ridgeColor">@android:color/darker_gray</item>
+        <item name="swirl_errorColor">@android:color/holo_red_dark</item>
     </style>
 
     <style name="WebTheme" parent="android:Theme.Material.NoActionBar"/>
