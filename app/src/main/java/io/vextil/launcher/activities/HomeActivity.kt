@@ -59,8 +59,7 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
     }
 
     override fun onPause() {
-        overlay.visibility = View.GONE
-        fingerprintSubscription?.unsubscribe()
+        cancelLaunchAppOrWebsiteLocked()
         super.onPause()
     }
 
@@ -79,6 +78,10 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
             loader.onContentChanged()
         }
         recycler.adapter = adapter
+
+        cancelFingerprintButton.setOnClickListener {
+            cancelLaunchAppOrWebsiteLocked()
+        }
     }
 
     fun setUpToolbar(){
@@ -157,14 +160,13 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
                     when (it.result) {
                         FingerprintResult.AUTHENTICATED -> {
                             fingerprintIcon.setState(SwirlView.State.OFF)
-                            overlay.visibility = View.INVISIBLE
+                            overlay.visibility = View.GONE
                             launchAppOrWebsite(app)
                         }
                         FingerprintResult.FAILED -> fingerprintIcon.setState(SwirlView.State.ERROR)
                         FingerprintResult.HELP -> fingerprintIcon.setState(SwirlView.State.ERROR)
                         else -> {
-                            fingerprintIcon.setState(SwirlView.State.OFF)
-                            overlay.visibility = View.INVISIBLE
+                            cancelLaunchAppOrWebsiteLocked()
                         }
                     }
                 },
@@ -172,6 +174,12 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
                     Toast.makeText(this, "FINGERPRINT AUTH FUCKED UP", Toast.LENGTH_LONG).show()
                 }
         )
+    }
+
+    fun cancelLaunchAppOrWebsiteLocked() {
+        fingerprintIcon.setState(SwirlView.State.OFF)
+        fingerprintSubscription?.unsubscribe()
+        overlay.visibility = View.GONE
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<AppModel>> {
@@ -187,6 +195,8 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
         throw UnsupportedOperationException()
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() {
+        cancelLaunchAppOrWebsiteLocked()
+    }
 
 }
