@@ -3,13 +3,10 @@ package io.vextil.launcher.adapters
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CompoundButton
-import android.widget.Switch
+import android.widget.ToggleButton
 import io.vextil.launcher.R
 import io.vextil.launcher.managers.AppsManager
 import io.vextil.launcher.models.AppModel
@@ -18,7 +15,7 @@ import kotlinx.android.synthetic.main.app_settings_list_item.view.*
 class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsAdapter(context) {
 
     init {
-        swapData(appsManager.all())
+        swapData(appsManager.all().sortedBy { it.name })
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View {
@@ -36,7 +33,7 @@ class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsA
         }
 
         view.hiddenToggle.isChecked = !app.visible
-        view.hiddenToggle.setOnClickListener() { it as Switch
+        view.hiddenToggle.setOnClickListener() { it as ToggleButton
             if (it.isChecked) {
                 appsManager.hide(app)
             } else {
@@ -45,7 +42,7 @@ class AppHiderAdapter(val appsManager: AppsManager, context: Context): BaseAppsA
         }
 
         view.lockedToggle.isChecked = app.locked
-        view.lockedToggle.setOnClickListener() { it as Switch
+        view.lockedToggle.setOnClickListener() { it as ToggleButton
             if (it.isChecked) {
                 appsManager.lock(app)
             } else {

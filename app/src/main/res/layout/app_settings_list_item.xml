@@ -24,20 +24,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"/>
 
-    <Switch
+    <ToggleButton
+        android:id="@+id/lockedToggle"
+        android:textOn="Locked"
+        android:textOff="Unlocked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lockedToggle"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@id/delete"
-        android:layout_marginEnd="27dp" />
+        android:layout_marginEnd="5dp" />
 
-    <Switch
+    <ToggleButton
+        android:id="@+id/hiddenToggle"
+        android:textOn="Hidden"
+        android:textOff="Visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/hiddenToggle"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@id/lockedToggle"
-        android:layout_marginEnd="27dp" />
+        android:layout_marginEnd="5dp" />
 
 </RelativeLayout>
