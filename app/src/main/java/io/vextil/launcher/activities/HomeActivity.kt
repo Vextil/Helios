@@ -24,6 +24,7 @@ import io.vextil.launcher.adapters.LauncherAdapter
 import io.vextil.launcher.async.AppsAsyncLoader
 import io.vextil.launcher.models.AppModel
 import kotlinx.android.synthetic.main.activity_home.*
+import rx.Subscription
 import kotlin.properties.Delegates
 
 class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<AppModel>> {
@@ -31,6 +32,7 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
     var adapter = LauncherAdapter(this)
     var loader: AppsAsyncLoader by Delegates.notNull()
     var wallpaperManager: WallpaperManager by Delegates.notNull()
+    var fingerprintSubscription: Subscription? = null
     var shouldUpdateToolbarColor = false
     var shouldRefreshApps = false
 
@@ -54,6 +56,12 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
             shouldRefreshApps = false
             loader.onContentChanged()
         }
+    }
+
+    override fun onPause() {
+        overlay.visibility = View.GONE
+        fingerprintSubscription?.unsubscribe()
+        super.onPause()
     }
 
     fun setUpContent() {
@@ -144,7 +152,7 @@ class HomeActivity(): AppCompatActivity(), LoaderManager.LoaderCallbacks<List<Ap
     fun launchAppOrWebsiteLocked(app: AppModel) {
         overlay.visibility = View.VISIBLE
         fingerprintIcon.setState(SwirlView.State.ON)
-        RxFingerprint.authenticate(this).subscribe(
+        fingerprintSubscription = RxFingerprint.authenticate(this).subscribe(
                 {
                     when (it.result) {
                         FingerprintResult.AUTHENTICATED -> {
