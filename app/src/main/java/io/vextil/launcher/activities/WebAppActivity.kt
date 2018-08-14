@@ -26,7 +26,7 @@ class WebAppActivity: Activity() {
         setTaskDescription(TaskDescription(title, icon))
 
         CookieManager.getInstance().setAcceptThirdPartyCookies(webview, true)
-        webview.setWebViewClient(WebViewClient())
+        webview.webViewClient = WebViewClient()
         webview.settings.javaScriptEnabled = true
 
         webview.loadUrl(intent.extras.getString("WEB-URL"))

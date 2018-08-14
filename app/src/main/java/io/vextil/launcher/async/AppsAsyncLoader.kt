@@ -24,9 +24,9 @@ class AppsAsyncLoader(val appsManager: AppsManager, val webAppsManager: WebAppsM
         deliverResult(apps)
     }
 
-    override fun deliverResult(apps: List<AppModel>) {
+    override fun deliverResult(apps: List<AppModel>?) {
         if (isStarted) super.deliverResult(apps)
-        this.apps = apps
+        this.apps = apps!!
     }
 
     override fun onStartLoading() {
